@@ -45,9 +45,20 @@ public class Produksi {
         return responseEntity;
     }
 
-    @DeleteMapping("/post/dataProduksi")
+    @PutMapping("/put/dataProduksiClass")
+    public ResponseEntity<MessageModel> putData(@RequestBody ProduksiPojo produksiPojo) {
+        ResponseEntity responseEntity = produksiPostService.editDataProduksiClassrepo(produksiPojo);
+        return responseEntity;
+    }
+    @DeleteMapping("/delete/dataProduksi")
     public ResponseEntity<MessageModel> deleteDataProduksi(@RequestParam UUID idProduksi) {
         ResponseEntity responseEntity = produksiService.deleteDataProduksi(idProduksi);
+        return responseEntity;
+    }
+
+    @DeleteMapping("/delete/dataProduksiClass")
+    public ResponseEntity<MessageModel> deleteData(@RequestParam UUID idProduksi) {
+        ResponseEntity responseEntity = produksiService.deleteDataProduksiClassRepo(idProduksi);
         return responseEntity;
     }
 

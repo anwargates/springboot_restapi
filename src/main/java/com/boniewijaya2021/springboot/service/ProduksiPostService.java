@@ -24,12 +24,11 @@ public class ProduksiPostService {
     @Autowired
     private ProduksiRepositoryClass produksiRepositoryClass;
 
-    public ResponseEntity<MessageModel> addDataProduksi(TblProduksi tblProduksi)
-    {
+    public ResponseEntity<MessageModel> addDataProduksi(TblProduksi tblProduksi) {
         Map<String, Object> result = new HashMap<>();
         MessageModel msg = new MessageModel();
 
-        try{
+        try {
             tblProduksi.setTanggalProduksi(LocalDateTime.now());
             produksiRepository.save(tblProduksi);
             msg.setStatus(true);
@@ -38,7 +37,7 @@ public class ProduksiPostService {
             msg.setData(result);
             return ResponseEntity.status(HttpStatus.OK).body(msg);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             msg.setStatus(false);
             msg.setMessage(e.getMessage());
@@ -46,13 +45,14 @@ public class ProduksiPostService {
         }
     }
 
-    public ResponseEntity<MessageModel> addDataProduksiClassrepo(ProduksiPojo produksiPojo)
-    {
+    public ResponseEntity<MessageModel> addDataProduksiClassrepo(ProduksiPojo produksiPojo) {
         Map<String, Object> result = new HashMap<>();
         MessageModel msg = new MessageModel();
 
-        try{
-            produksiPojo.setTanggalProduksi(LocalDateTime.now());
+        try {
+            if (produksiPojo.getTanggalProduksi() == null) {
+                produksiPojo.setTanggalProduksi(LocalDateTime.now());
+            }
             produksiRepositoryClass.postData(produksiPojo);
             msg.setStatus(true);
             msg.setMessage("Success");
@@ -60,7 +60,30 @@ public class ProduksiPostService {
             msg.setData(result);
             return ResponseEntity.status(HttpStatus.OK).body(msg);
 
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg.setStatus(false);
+            msg.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        }
+    }
+
+    public ResponseEntity<MessageModel> editDataProduksiClassrepo(ProduksiPojo produksiPojo) {
+        Map<String, Object> result = new HashMap<>();
+        MessageModel msg = new MessageModel();
+
+        try {
+            if (produksiPojo.getTanggalProduksi() == null) {
+                produksiPojo.setTanggalProduksi(LocalDateTime.now());
+            }
+            produksiRepositoryClass.editData(produksiPojo);
+            msg.setStatus(true);
+            msg.setMessage("Success");
+            result.put("data", produksiPojo);
+            msg.setData(result);
+            return ResponseEntity.status(HttpStatus.OK).body(msg);
+
+        } catch (Exception e) {
             e.printStackTrace();
             msg.setStatus(false);
             msg.setMessage(e.getMessage());

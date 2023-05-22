@@ -97,5 +97,18 @@ public class ProduksiService {
 
     }
 
-
+    public ResponseEntity deleteDataProduksiClassRepo(UUID idProduksi){
+        MessageModel msg = new MessageModel();
+        try{
+            produksiRepositoryClass.deleteData(idProduksi);
+            msg.setStatus(true);
+            msg.setMessage("Data Deleted");
+            return ResponseEntity.ok().body(msg);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg.setStatus(false);
+            msg.setMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        }
+    }
 }
